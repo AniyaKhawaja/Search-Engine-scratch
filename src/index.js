@@ -20,14 +20,14 @@ function formatDate(date) {
   let minutes = date.getMinutes();
   let hours = date.getHours();
   let days = [
-    `Sunday`,
-    `Monday`,
-    `Tuesday`,
-    `Wednesday`,
-    `Thursday`,
-    `Friday`,
-    `Saturday`,
-    `Sunday`,
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ];
   let day = days[date.getDay()];
 
