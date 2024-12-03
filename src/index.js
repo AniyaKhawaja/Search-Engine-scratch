@@ -15,7 +15,9 @@ function updateWeather(response) {
   windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
   timeElement.innerHTML = formatDate(date);
   tempElement.innerHTML = Math.round(temp);
-  iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-icon" />`
+  iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-icon" />`;
+
+  getForecast(response.data.city);
 }
 
 function formatDate(date) {
@@ -40,7 +42,7 @@ function formatDate(date) {
 }
 
 function searchCity(city) {
-  let apiKey = "69ba4a782t23bf4e605dfe17d2ob01a9";
+  let apiKey = "fbef01f4et1b02o0d25c27210a43ef3f";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
   axios.get(apiUrl).then(updateWeather);
 }
@@ -52,7 +54,41 @@ function handleSearchSubmit(event) {
   searchCity(searchInput.value);
 }
 
+function getForecast(city) {
+  let apiKey = "fbef01f4et1b02o0d25c27210a43ef3f";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+  let forecastHTML = "";
+
+  response.data.daily.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+  <div class="weather-forecast-day">
+  <div class="weather-forecast-date">Tue</div>
+  
+  <img src="${day.condition.icon_url}" class="weather-forecast-icon" />
+  <div class="weather-forecast-temps">
+      <div class="weather-forecast-temp">
+      <strong>${Math.round(day.temperature.maximum)}°</strong> 
+     </div>
+  <div class="weather-forecast-temp">${Math.round(
+    day.temperature.minimum
+  )}°</div>
+  </div>
+      </div>
+`;
+  });
+
+  let forecastElement = document.querySelector("#forecast");
+  forecastElement.innerHTML = forecastHTML;
+}
+
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
 searchCity("Paris");
+getForecast("Paris");
